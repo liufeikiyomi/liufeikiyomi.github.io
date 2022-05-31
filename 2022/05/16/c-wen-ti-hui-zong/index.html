@@ -474,7 +474,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.5k
+                    2k
                 </div>
                 
 
@@ -694,10 +694,75 @@ public:
 	}
 };<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="查看数据类型"><a href="#查看数据类型" class="headerlink" title="查看数据类型"></a>查看数据类型</h3><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;typeinfo&gt;
+<h2 id="查看数据类型"><a href="#查看数据类型" class="headerlink" title="查看数据类型"></a>查看数据类型</h2><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;typeinfo&gt;
 string s1 = "apple";
 cout &lt;&lt; typeid(s1.size()).name();
 //得到结果unsigned int<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="生成随机数"><a href="#生成随机数" class="headerlink" title="生成随机数"></a>生成随机数</h2><p>如果想每次生成不一样的随机数，要事先调用<code>srand((unsigned)time(NULL))</code>，根据运行的系统时间生成随机数</p>
+<p>然后调用rand产生一定范围的随机数。</p>
+<pre class="line-numbers language-none"><code class="language-none">要取得[a,b)的随机整数，使用(rand() % (b-a))+ a;
+要取得[a,b]的随机整数，使用(rand() % (b-a+1))+ a;
+要取得(a,b]的随机整数，使用(rand() % (b-a))+ a + 1;
+通用公式:a + rand() % n；其中的a是起始值，n是整数的范围。
+要取得a到b之间的随机整数，另一种表示：a + (int)b * rand() / (RAND_MAX + 1)。
+要取得0～1之间的浮点数，可以使用rand() / double(RAND_MAX)。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="nth-element将数组第k数放到该在的位置"><a href="#nth-element将数组第k数放到该在的位置" class="headerlink" title="nth_element将数组第k数放到该在的位置"></a>nth_element将数组第k数放到该在的位置</h2><p>[每日一题]中遇到</p>
+<p><code> nth_element(nums.begin(),nums.begin()+z,nums.end());</code></p>
+<p>该行可以把数组nums的第z小的数放在nums[z+1]（begin()+z）上。</p>
+<p>据说可以传第四个参数，compare，自定义比较函数。</p>
+<h2 id="获取系统时间"><a href="#获取系统时间" class="headerlink" title="获取系统时间"></a>获取系统时间</h2><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;stdlib.h&gt;
+system("time");//可直接打印，也可以加上cout&lt;&lt;
+//有点low，出问题<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+
+
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">//打印系统时间
+string gettime() {
+	SYSTEMTIME sys;
+	GetLocalTime(&amp;sys);
+	char res[128];
+	sprintf_s(res, "%4d/%02d/%02d %02d:%02d:%02d.%03d", sys.wYear, sys.wMonth, sys.wDay, sys.wHour, sys.wMinute, sys.wSecond, sys.wMilliseconds);
+	return (string)res;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="初始化二维数组"><a href="#初始化二维数组" class="headerlink" title="初始化二维数组"></a>初始化二维数组</h2><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">int n, m ;
+	cin &gt;&gt; n &gt;&gt; m;
+	vector&lt;vector&lt;int&gt;&gt; matrix(m, vector&lt;int&gt;(n));
+	for (int i = 0; i &lt; m; i++) {
+		for (int j = 0; j &lt; n; j++) {
+			matrix[i][j] = i;
+			cout &lt;&lt; matrix[i][j];
+		}
+		cout &lt;&lt; endl;
+	}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<pre class="line-numbers language-none"><code class="language-none">// 初始化一个 二维的matrix, 行M,列N,且值为0
+vector&lt;vector&lt;int&gt;&gt; matrix(M,vector&lt;int&gt;(N));
+//等价于下面的
+vector&lt;vector&lt;int&gt; &gt; matrix(M); 
+for(int i=0;i&lt;M;i++) {
+    matrix[i].resize(N);
+}
+//等价于下面的
+vector&lt; vector&lt;int&gt; &gt; matrix;
+matrix.resize(M);//M行
+for(int i=0;i&lt;matrix.size();i++){
+    matrix[i].resize(N);//每一行都是N列
+}
+    
+// 初始化一个 二维的matrix, 行M,列N,且值自定义为data;
+vector&lt;vector&lt;int&gt;&gt; matrix(M,vector&lt;int&gt;(N,data));
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
                 
@@ -1249,7 +1314,7 @@ cout &lt;&lt; typeid(s1.size()).name();
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">10.8k</span>
+                        class="white-color">10.9k</span>
             
             
             
